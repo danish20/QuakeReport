@@ -20,6 +20,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.android.quakereport.Adapters.ListDataAdapter;
+import com.example.android.quakereport.util.EarthquakeData;
+
 import java.util.ArrayList;
 
 public class EarthquakeActivity extends AppCompatActivity {
@@ -32,24 +35,22 @@ public class EarthquakeActivity extends AppCompatActivity {
         setContentView(R.layout.earthquake_activity);
 
         // Create a fake list of earthquake locations.
-        ArrayList<String> earthquakes = new ArrayList<>();
-        earthquakes.add("San Francisco");
-        earthquakes.add("London");
-        earthquakes.add("Tokyo");
-        earthquakes.add("Mexico City");
-        earthquakes.add("Moscow");
-        earthquakes.add("Rio de Janeiro");
-        earthquakes.add("Paris");
+        ArrayList<EarthquakeData> earthquakes = new ArrayList<>();
+        earthquakes.add(new EarthquakeData("4.5","San Francisco","Feb, 20 2017"));
+        earthquakes.add(new EarthquakeData("7.0","London","Feb, 20 2017"));
+        earthquakes.add(new EarthquakeData("6.7","Tokyo","Feb, 20 2017"));
+        earthquakes.add(new EarthquakeData("4.9","Mexico City","Feb, 20 2017"));
+        earthquakes.add(new EarthquakeData("5.0","Moscow","Feb, 20 2017"));
+        earthquakes.add(new EarthquakeData("2.5","Rio de Janeiro","Feb, 20 2017"));
+        earthquakes.add(new EarthquakeData("3.7","Paris","Feb, 20 2017"));
+
 
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
         // Create a new {@link ArrayAdapter} of earthquakes
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_list_item_1, earthquakes);
-
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(adapter);
+        earthquakeListView.setAdapter(new ListDataAdapter(earthquakes));
     }
 }
