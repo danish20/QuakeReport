@@ -7,13 +7,15 @@ package com.example.android.quakereport.util;
 public class EarthquakeData
 {
 
-    private String location, date, magnitude;
+    private String location, date, magnitude, time;
 
-    public EarthquakeData(String mag, String loc, String date)
+    public EarthquakeData(String mag, String loc, String date, String time)
     {
         this.date=date;
         this.location=loc;
         this.magnitude=mag;
+        this.time = time;
+
     }
 
     public String getMagnitude()
@@ -27,5 +29,9 @@ public class EarthquakeData
     public String getDate()
     {
         return this.date;
+    }
+    public String getTime()
+    {
+        return this.time;
     }
 }

@@ -45,9 +45,11 @@ public class ListDataAdapter extends BaseAdapter
         TextView mag = (TextView) view.findViewById(R.id.mag);
         TextView loc = (TextView) view.findViewById(R.id.loc);
         TextView date = (TextView) view.findViewById(R.id.date);
+        TextView time = (TextView) view.findViewById(R.id.time);
         mag.setText(data.get(i).getMagnitude());
         loc.setText(data.get(i).getLocation());
         date.setText(data.get(i).getDate());
+        time.setText(data.get(i).getTime());
         return view;
     }
 }
