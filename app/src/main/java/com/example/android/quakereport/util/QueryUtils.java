@@ -101,6 +101,13 @@ public final class QueryUtils {
 
     public static String getSampleJsonResponse(InputStream inputStream) throws IOException
     {
+        try {
+            Thread.sleep(2000);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         Log.d("HEE","IN GETJSON");
         StringBuilder output = new StringBuilder();
         if(inputStream!=null)

@@ -34,4 +34,9 @@
         android:textAlignment="center"
         android:textSize="15sp"
         />
+    <ProgressBar
+        android:id="@+id/loading_spinner"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

@@ -26,8 +26,10 @@ import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.quakereport.Adapters.ListDataAdapter;
@@ -44,6 +46,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     public static ListView earthquakeListView;
     public TextView empty;
+    public ProgressBar progressBar;
     public static final String urlString = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         // Find a reference to the {@link ListView} in the layout
          earthquakeListView= (ListView) findViewById(R.id.list);
         empty = (TextView)findViewById(R.id.empty);
+        progressBar = (ProgressBar)findViewById(R.id.loading_spinner);
         earthquakeListView.setEmptyView(empty);
 
         getLoaderManager().initLoader(0,null,this);
@@ -83,6 +87,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoadFinished(Loader<List<EarthquakeData>> loader, List<EarthquakeData> earthquakeDatas) {
+        progressBar.setVisibility(View.GONE);
         empty.setText("No Earthquake Data to Display");
         earthquakeListView.setAdapter(new ListDataAdapter((ArrayList<EarthquakeData>)earthquakeDatas));
     }
