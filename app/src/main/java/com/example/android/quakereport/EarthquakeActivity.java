@@ -28,6 +28,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.android.quakereport.Adapters.ListDataAdapter;
 import com.example.android.quakereport.util.EarthquakeData;
@@ -42,6 +43,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
     public static ListView earthquakeListView;
+    public TextView empty;
     public static final String urlString = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
         // Find a reference to the {@link ListView} in the layout
          earthquakeListView= (ListView) findViewById(R.id.list);
+        empty = (TextView)findViewById(R.id.empty);
+        earthquakeListView.setEmptyView(empty);
 
         getLoaderManager().initLoader(0,null,this);
 
@@ -79,6 +83,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoadFinished(Loader<List<EarthquakeData>> loader, List<EarthquakeData> earthquakeDatas) {
+        empty.setText("No Earthquake Data to Display");
         earthquakeListView.setAdapter(new ListDataAdapter((ArrayList<EarthquakeData>)earthquakeDatas));
     }
 
