@@ -147,7 +147,7 @@ public final class QueryUtils {
                 String date = format.format(time);
                 format = new SimpleDateFormat("h:mm a");
                 String times = format.format(time);
-                //earthquakes.add(new EarthquakeData(mag+"",place,date,times));
+                earthquakes.add(new EarthquakeData(mag+"",place,date,times));
             }
 
         } catch (JSONException e) {
