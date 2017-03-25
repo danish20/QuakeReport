@@ -15,8 +15,15 @@
  */
 package com.example.android.quakereport;
 
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
+import android.content.Context;
+import android.content.Loader;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
+
+
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -30,7 +37,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EarthquakeActivity extends AppCompatActivity {
+public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<EarthquakeData>> {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
@@ -56,44 +63,60 @@ public class EarthquakeActivity extends AppCompatActivity {
         // Find a reference to the {@link ListView} in the layout
          earthquakeListView= (ListView) findViewById(R.id.list);
 
+        getLoaderManager().initLoader(0,null,this);
+
         // Create a new {@link ArrayAdapter} of earthquakes
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
-        EarthquakeAsyncTask getData = new EarthquakeAsyncTask();
-        getData.execute(urlString);
 
     }
 
-    public static void updateUI(ArrayList<EarthquakeData> data)
-    {
-        Log.d(LOG_TAG,"Update UI");
-        earthquakeListView.setAdapter(new ListDataAdapter(data));
+
+    @Override
+    public Loader<List<EarthquakeData>> onCreateLoader(int i, Bundle bundle) {
+        return new EarthquakeLoader(this,urlString);
     }
 
-    private class EarthquakeAsyncTask extends AsyncTask<String,Void,List<EarthquakeData>>
-    {
+    @Override
+    public void onLoadFinished(Loader<List<EarthquakeData>> loader, List<EarthquakeData> earthquakeDatas) {
+        earthquakeListView.setAdapter(new ListDataAdapter((ArrayList<EarthquakeData>)earthquakeDatas));
+    }
 
+    @Override
+    public void onLoaderReset(Loader<List<EarthquakeData>> loader) {
+
+        earthquakeListView.setAdapter(new ListDataAdapter(new ArrayList<EarthquakeData>()));
+
+    }
+
+
+    private static class EarthquakeLoader extends AsyncTaskLoader<List<EarthquakeData>>
+    {
+        String url;
+       public EarthquakeLoader(Context context, String url)
+       {
+           super(context);
+           this.url=url;
+       }
         @Override
-        protected List<EarthquakeData> doInBackground(String... strings) {
+        public List<EarthquakeData> loadInBackground() {
             ArrayList<EarthquakeData> earthquakes=null;
-            try {
-                if(strings.length<1 || strings[0]==null)
-                    return null;
-                String response = QueryUtils.makeHttpRequest(strings[0]);
+            try
+            {
+
+                String response = QueryUtils.makeHttpRequest(url);
                 earthquakes = QueryUtils.extractEarthquakes(response);
             }
             catch (IOException e)
             {
-             e.printStackTrace();
+                e.printStackTrace();
             }
             return earthquakes;
         }
 
         @Override
-        protected void onPostExecute(List<EarthquakeData> earthquakes) {
-         if(earthquakes==null)
-             return;
-            updateUI((ArrayList<EarthquakeData>) earthquakes);
+        protected void onStartLoading() {
+            forceLoad();
         }
     }
 }
